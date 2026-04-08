@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nutrition Analysis</title>
+  <link rel="stylesheet" href="/css/nutrition.css">
+</head>
+<body>
+  <header>
+    <h1>Nutrition Analysis</h1>
+    <nav>
+      <a href="./index.html">Home</a>
+      <a href="recipes.html">Recipes</a>
+      <a href="nutrition.html">Nutrition Analysis</a>
+      <a href="favorites.html">Favorites</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="input-section">
+      <h2>Enter Ingredients</h2>
+      <textarea id="ingredientsInput" placeholder="e.g. 1 cup rice, 200g chicken breast"></textarea>
+      <button id="analyzeBtn">Analyze Nutrition</button>
+    </section>
+
+    <section id="nutritionResults" class="results">
+      <!-- Nutrition data will be injected dynamically -->
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Recipe Finder</p>
+  </footer>
+
+  <script src="../js/nutrition.js"></script>
+</body>
+</html>
