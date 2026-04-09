@@ -1,35 +1,53 @@
-const appId = 'YOUR_EDAMAM_APP_ID'; // replace with your Edamam app ID
-const appKey = 'YOUR_EDAMAM_APP_KEY'; // replace with your Edamam app key
+const apiKey = "eRj63pSLJUIdqcPdY0bfVvoVSh9LbHmVaXU6cDuc"; // replace with your key
 
-const analyzeBtn = document.getElementById('analyzeBtn');
-const ingredientsInput = document.getElementById('ingredientsInput');
-const nutritionResults = document.getElementById('nutritionResults');
+const analyzeBtn = document.getElementById("analyzeBtn");
+const ingredientsInput = document.getElementById("ingredientsInput");
+const nutritionResults = document.getElementById("nutritionResults");
 
-analyzeBtn.addEventListener('click', async () => {
-  const ingredients = ingredientsInput.value.trim();
-  if (!ingredients) {
-    alert('Please enter ingredients!');
+analyzeBtn.addEventListener("click", async () => {
+  const ingredients = ingredientsInput.value.trim().split("\n");
+  if (!ingredients.length) {
+    alert("Please enter ingredients!");
     return;
   }
 
-  const url = `https://api.edamam.com/api/nutrition-data?app_id=${appId}&app_key=${appKey}&ingr=${encodeURIComponent(ingredients)}`;
+  nutritionResults.innerHTML = "<p>Fetching nutrition data...</p>";
 
   try {
-    const response = await fetch(url);
-    const data = await response.json();
-    displayNutrition(data);
+    let output = "<h2>Nutrition Breakdown</h2>";
+
+    for (const item of ingredients) {
+      const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(item)}&api_key=${apiKey}`;
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.foods && data.foods.length > 0) {
+        const food = data.foods[0]; // take first match
+        const nutrients = food.foodNutrients;
+
+        const calories = nutrients.find(n => n.nutrientName === "Energy")?.value || "N/A";
+        const protein = nutrients.find(n => n.nutrientName === "Protein")?.value || "N/A";
+        const fat = nutrients.find(n => n.nutrientName === "Total lipid (fat)")?.value || "N/A";
+        const carbs = nutrients.find(n => n.nutrientName === "Carbohydrate, by difference")?.value || "N/A";
+
+        output += `
+          <div class="food-item">
+            <h3>${food.description}</h3>
+            <p><strong>Calories:</strong> ${calories} kcal</p>
+            <p><strong>Protein:</strong> ${protein} g</p>
+            <p><strong>Fat:</strong> ${fat} g</p>
+            <p><strong>Carbs:</strong> ${carbs} g</p>
+          </div>
+        `;
+      } else {
+        output += `<p>No data found for "${item}".</p>`;
+      }
+    }
+
+    nutritionResults.innerHTML = output;
   } catch (error) {
-    console.error('Error fetching nutrition data:', error);
+    console.error("Error fetching USDA data:", error);
+    nutritionResults.innerHTML = "<p>Failed to fetch nutrition data. Please try again.</p>";
   }
 });
 
-function displayNutrition(data) {
-  nutritionResults.innerHTML = `
-    <h3>Nutrition Breakdown</h3>
-    <p><strong>Calories:</strong> ${data.calories || 'N/A'} kcal</p>
-    <p><strong>Protein:</strong> ${data.totalNutrients.PROCNT?.quantity.toFixed(1) || 'N/A'} g</p>
-    <p><strong>Carbs:</strong> ${data.totalNutrients.CHOCDF?.quantity.toFixed(1) || 'N/A'} g</p>
-    <p><strong>Fat:</strong> ${data.totalNutrients.FAT?.quantity.toFixed(1) || 'N/A'} g</p>
-    <p><strong>Fiber:</strong> ${data.totalNutrients.FIBTG?.quantity.toFixed(1) || 'N/A'} g</p>
-  `;
-}
