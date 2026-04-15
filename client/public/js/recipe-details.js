@@ -1,48 +1,65 @@
-const apiKey = 'YOUR_SPOONACULAR_API_KEY'; // replace with your key
-const recipeDetails = document.getElementById('recipeDetails');
+const apiKey = "5ed052f56a404a0c945da244c8085f56"; // replace with your USDA key
 
-// Get recipe ID from query string
-const params = new URLSearchParams(window.location.search);
-const recipeId = params.get('id');
+document.addEventListener("DOMContentLoaded", async () => {
+  // Example recipe data (later you can load from Favorites or query string)
+  const recipe = {
+    title: "Spaghetti Carbonara",
+    meta: "Prep: 15 min | Cook: 20 min | Serves: 4",
+    ingredients: ["spaghetti", "pancetta", "eggs", "parmesan cheese"],
+    instructions: [
+      "Boil spaghetti until al dente.",
+      "Fry pancetta until crisp.",
+      "Whisk eggs and Parmesan together.",
+      "Drain pasta, toss with pancetta, remove from heat.",
+      "Stir in egg mixture quickly to create a creamy sauce.",
+      "Season with salt and pepper, serve immediately."
+    ]
+  };
 
-async function fetchRecipeDetails() {
-  try {
-    const response = await fetch(
-      `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${apiKey}`
-    );
-    const data = await response.json();
-    displayRecipeDetails(data);
-  } catch (error) {
-    console.error('Error fetching recipe details:', error);
+  // Populate recipe details
+  document.getElementById("recipeTitle").textContent = recipe.title;
+  document.getElementById("recipeMeta").textContent = recipe.meta;
+  document.getElementById("ingredientsList").innerHTML = recipe.ingredients.map(i => `<li>${i}</li>`).join("");
+  document.getElementById("instructionsList").innerHTML = recipe.instructions.map(i => `<li>${i}</li>`).join("");
+
+  // Fetch nutrition data from USDA
+  const nutritionResults = document.getElementById("nutritionResults");
+  nutritionResults.innerHTML = "<p>Fetching nutrition data...</p>";
+
+  let output = "";
+  for (const item of recipe.ingredients) {
+    const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(item)}&api_key=${apiKey}`;
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.foods && data.foods.length > 0) {
+        const food = data.foods[0];
+        const nutrients = food.foodNutrients;
+
+        const calories = nutrients.find(n => n.nutrientName === "Energy")?.value || "N/A";
+        const protein = nutrients.find(n => n.nutrientName === "Protein")?.value || "N/A";
+        const fat = nutrients.find(n => n.nutrientName === "Total lipid (fat)")?.value || "N/A";
+        const carbs = nutrients.find(n => n.nutrientName === "Carbohydrate, by difference")?.value || "N/A";
+
+        output += `
+          <div class="food-item">
+            <h4>${food.description}</h4>
+            <p><strong>Calories:</strong> ${calories} kcal</p>
+            <p><strong>Protein:</strong> ${protein} g</p>
+            <p><strong>Fat:</strong> ${fat} g</p>
+            <p><strong>Carbs:</strong> ${carbs} g</p>
+          </div>
+        `;
+      } else {
+        output += `<p>No data found for "${item}".</p>`;
+      }
+    } catch (error) {
+      console.error("Error fetching USDA data:", error);
+      output += `<p>Error fetching data for "${item}".</p>`;
+    }
   }
-}
 
-function displayRecipeDetails(recipe) {
-  recipeDetails.innerHTML = `
-    <img src="${recipe.image}" alt="${recipe.title}">
-    <h2>${recipe.title}</h2>
-    <p><strong>Ready in:</strong> ${recipe.readyInMinutes} minutes | <strong>Servings:</strong> ${recipe.servings}</p>
+  nutritionResults.innerHTML = output;
+});
 
-    <div class="ingredients">
-      <h3>Ingredients</h3>
-      <ul>
-        ${recipe.extendedIngredients.map((ing) => `<li>${ing.original}</li>`).join('')}
-      </ul>
-    </div>
-
-    <div class="instructions">
-      <h3>Instructions</h3>
-      <p>${recipe.instructions || 'No instructions available.'}</p>
-    </div>
-
-    <div class="nutrition">
-      <h3>Nutrition (basic)</h3>
-      <p>Calories: ${recipe.nutrition?.nutrients?.find((n) => n.name === 'Calories')?.amount || 'N/A'} kcal</p>
-      <p>Protein: ${recipe.nutrition?.nutrients?.find((n) => n.name === 'Protein')?.amount || 'N/A'} g</p>
-      <p>Carbs: ${recipe.nutrition?.nutrients?.find((n) => n.name === 'Carbohydrates')?.amount || 'N/A'} g</p>
-      <p>Fat: ${recipe.nutrition?.nutrients?.find((n) => n.name === 'Fat')?.amount || 'N/A'} g</p>
-    </div>
-  `;
-}
-
-fetchRecipeDetails();

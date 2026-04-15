@@ -3,24 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <title>Recipe Details</title>
-  <link rel="stylesheet" href="../css/recipe-details.css">
+  <link rel="stylesheet" href="/final_project/client/css/recipe-details.css">
 </head>
 <body>
   <header>
     <h1>Recipe Details</h1>
     <nav>
-    <a href="/final_project/client/index.html">Home</a>
-    <a href="/final_project/client/pages/recipes.html">Recipes</a>
-    <a href="/final_project/client/pages/nutrition.html">Nutrition Analysis</a>
-    <a href="/final_project/client/pages/favorites.html">Favorites</a>
-    <a href="/final_project/client/pages/profile.html">Profile</a>
-  </nav>
-
+      <a href="/final_project/client/index.html">Home</a>
+      <a href="/final_project/client/pages/recipes.html">Recipes</a>
+      <a href="/final_project/client/pages/nutrition.html">Nutrition Analysis</a>
+      <a href="/final_project/client/pages/favorites.html">Favorites</a>
+      <a href="/final_project/client/pages/profile.html">Profile</a>
+    </nav>
   </header>
 
-  <main>
-    <section id="recipeDetails" class="recipe-details">
-      <!-- Recipe details will be injected dynamically -->
+  <main class="recipe-container">
+    <section class="recipe-hero">
+      <h2 id="recipeTitle">Loading recipe...</h2>
+      <p id="recipeMeta"></p>
+    </section>
+
+    <section class="ingredients">
+      <h3>Ingredients</h3>
+      <ul id="ingredientsList"></ul>
+    </section>
+
+    <section class="instructions">
+      <h3>Instructions</h3>
+      <ol id="instructionsList"></ol>
+    </section>
+
+    <section class="nutrition">
+      <h3>Nutrition Info</h3>
+      <div id="nutritionResults"></div>
     </section>
   </main>
 
@@ -28,6 +43,8 @@
     <p>&copy; 2026 Recipe Finder</p>
   </footer>
 
-  <script src="../js/recipe-details.js"></script>
+  <script src="/final_project/client/src/scripts/recipe-details.js" defer></script>
 </body>
 </html>
+
+
