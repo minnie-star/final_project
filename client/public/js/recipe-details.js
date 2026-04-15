@@ -1,7 +1,7 @@
 const apiKey = "5ed052f56a404a0c945da244c8085f56"; // replace with your USDA key
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Example recipe data (later you can load from Favorites or query string)
+  // Example recipe data (later you can load dynamically from Favorites or query string)
   const recipe = {
     title: "Spaghetti Carbonara",
     meta: "Prep: 15 min | Cook: 20 min | Serves: 4",
@@ -62,4 +62,3 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   nutritionResults.innerHTML = output;
 });
-
