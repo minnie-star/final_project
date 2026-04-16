@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Favorites</title>
+  <link rel="stylesheet" href="/final_project/client/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Favorites</h1>
+    <nav>
+      <a href="/final_project/client/index.html">Home</a>
+      <a href="/final_project/client/pages/recipes.html">Recipes</a>
+      <a href="/final_project/client/pages/nutrition.html">Nutrition Analysis</a>
+      <a href="/final_project/client/pages/favorites.html">Favorites</a>
+      <a href="/final_project/client/pages/profile.html">Profile</a>
+    </nav>
+  </header>
+
+  <main>
+    <ul id="favoritesList"></ul>
+  </main>
+
+  <ul id="favoritesList"></ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const list = document.getElementById("favoritesList");
+
+    if (favorites.length === 0) {
+      list.innerHTML = "<p>No favorites saved yet.</p>";
+    } else {
+      favorites.forEach((recipe, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <h3><a href="/final_project/client/pages/recipe-details.html?id=${index}">
+            ${recipe.title}
+          </a></h3>
+          <p>${recipe.meta}</p>
+        `;
+        list.appendChild(li);
+      });
+    }
+  });
+</script> 
+</body>
+</html>
