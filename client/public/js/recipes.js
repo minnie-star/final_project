@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let output = "";
   for (const item of recipe.ingredients) {
-    const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(item)}&api_key=${apiKey}`;
+    const url = `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${apiKeyKey}`;
     try {
       const response = await fetch(url);
       const data = await response.json();
