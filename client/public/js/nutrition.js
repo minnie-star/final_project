@@ -1,4 +1,4 @@
-const apiKey = "eRj63pSLJUIdqcPdY0bfVvoVSh9LbHmVaXU6cDuc"; // replace with your key
+const apiKey = "eRj63pSLJUIdqcPdY0bfVvoVSh9LbHmVaXU6cDuc"; 
 
 const analyzeBtn = document.getElementById("analyzeBtn");
 const ingredientsInput = document.getElementById("ingredientsInput");

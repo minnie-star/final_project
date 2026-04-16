@@ -1,4 +1,4 @@
-const apiKey = '5ed052f56a404a0c945da244c8085f56'; // replace with your USDA key
+const apiKey = '5ed052f56a404a0c945da244c8085f56'; 
 
 document.addEventListener("DOMContentLoaded", async () => {
   // Example recipe data (later you can load from Favorites or query string)
