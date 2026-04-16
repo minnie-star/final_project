@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const nutritionResults = document.getElementById("nutritionResults");
 
-  // If nutrition data is missing, re-fetch from USDA
+  // If nutrition data is missing, fetch from USDA
   if (!recipe.nutrition || recipe.nutrition.trim() === "") {
     nutritionResults.innerHTML = "<p>Fetching nutrition data...</p>";
     let output = "";
@@ -75,13 +75,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     nutritionResults.innerHTML = output;
 
-    // Update recipe in LocalStorage with fresh nutrition data
+    // Save updated nutrition back to LocalStorage
     if (recipeId !== null && favorites[recipeId]) {
       favorites[recipeId].nutrition = output;
       localStorage.setItem("favorites", JSON.stringify(favorites));
     }
   } else {
-    // Use saved nutrition data
     nutritionResults.innerHTML = recipe.nutrition;
   }
 
