@@ -134,16 +134,6 @@ button:hover {
   box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
 }
 
-/* Favorites page */
-.favorites-list { 
-  list-style: none; 
-  padding: 0; 
-}
-
-.favorites-list li { 
-  margin: 1rem 0; 
-}
-
 footer {
   background: #4CAF50;
   color: white;
