@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     // Fetch recipe details from Spoonacular
-    const url = `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${apiKeyKey}`;
+    const url = `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${apiKey}`;
     const response = await fetch(url);
     const recipe = await response.json();
 
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Nutrition (optional: Spoonacular has nutrition endpoint)
-    const nutritionUrl = `https://api.spoonacular.com/recipes/${recipeId}/nutritionWidget.json?apiKey=${spoonacularKey}`;
+    const nutritionUrl = `https://api.spoonacular.com/recipes/${recipeId}/nutritionWidget.json?apiKey=${apiKey}`;
     const nutritionResponse = await fetch(nutritionUrl);
     const nutrition = await nutritionResponse.json();
 
