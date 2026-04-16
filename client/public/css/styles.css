@@ -25,12 +25,6 @@ nav a:hover {
   text-decoration: underline;
  }
 
-footer { 
-  text-align: center; 
-  padding: 1rem; 
-  background: #eee; 
-}
-
 /* Home page */
 .hero {
   display: flex;
